@@ -1,14 +1,60 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MNIST</title>
-    <script type="module" crossorigin>(function(){let e=document.createElement(`link`).relList;if(e&&e.supports&&e.supports(`modulepreload`))return;for(let e of document.querySelectorAll(`link[rel="modulepreload"]`))n(e);new MutationObserver(e=>{for(let t of e)if(t.type===`childList`)for(let e of t.addedNodes)e.tagName===`LINK`&&e.rel===`modulepreload`&&n(e)}).observe(document,{childList:!0,subtree:!0});function t(e){let t={};return e.integrity&&(t.integrity=e.integrity),e.referrerPolicy&&(t.referrerPolicy=e.referrerPolicy),e.crossOrigin===`use-credentials`?t.credentials=`include`:e.crossOrigin===`anonymous`?t.credentials=`omit`:t.credentials=`same-origin`,t}function n(e){if(e.ep)return;e.ep=!0;let n=t(e);fetch(e.href,n)}})();</script>
-  </head>
-  <body>
-    <div id="app">
-        caca
-    </div>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>MNIST</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+      <script type="module" crossorigin>(function(){let e=document.createElement(`link`).relList;if(e&&e.supports&&e.supports(`modulepreload`))return;for(let e of document.querySelectorAll(`link[rel="modulepreload"]`))n(e);new MutationObserver(e=>{for(let t of e)if(t.type===`childList`)for(let e of t.addedNodes)e.tagName===`LINK`&&e.rel===`modulepreload`&&n(e)}).observe(document,{childList:!0,subtree:!0});function t(e){let t={};return e.integrity&&(t.integrity=e.integrity),e.referrerPolicy&&(t.referrerPolicy=e.referrerPolicy),e.crossOrigin===`use-credentials`?t.credentials=`include`:e.crossOrigin===`anonymous`?t.credentials=`omit`:t.credentials=`same-origin`,t}function n(e){if(e.ep)return;e.ep=!0;let n=t(e);fetch(e.href,n)}})();var e=document.getElementById(`draw`),t=document.getElementById(`clear`),n=document.getElementById(`preview`),r=document.getElementById(`pred`),i=document.getElementById(`conf`),a=document.getElementById(`run`),o=document.getElementById(`status`);document.getElementById(`model`);var s=document.getElementById(`compileTime`),c=document.getElementById(`inferTime`),l=e.getContext(`2d`),u=n.getContext(`2d`);function d(){l.fillStyle=`black`,l.fillRect(0,0,e.width,e.height)}d();var f=!1,p=null,m={color:`white`,width:20,cap:`round`,join:`round`};function h(e,t){f=!0,p={x:e,y:t}}function g(e,t){f&&(l.strokeStyle=m.color,l.lineWidth=m.width,l.lineCap=m.cap,l.lineJoin=m.join,l.beginPath(),l.moveTo(p.x,p.y),l.lineTo(e,t),l.stroke(),p={x:e,y:t})}function _(){f=!1,p=null}e.addEventListener(`mousedown`,t=>{let n=e.getBoundingClientRect();h(t.clientX-n.left,t.clientY-n.top)}),e.addEventListener(`mousemove`,t=>{let n=e.getBoundingClientRect();g(t.clientX-n.left,t.clientY-n.top)}),window.addEventListener(`mouseup`,_),e.addEventListener(`touchstart`,t=>{let n=t.touches[0],r=e.getBoundingClientRect();h(n.clientX-r.left,n.clientY-r.top),t.preventDefault()},{passive:!1}),e.addEventListener(`touchmove`,t=>{let n=t.touches[0],r=e.getBoundingClientRect();g(n.clientX-r.left,n.clientY-r.top),t.preventDefault()},{passive:!1}),window.addEventListener(`touchend`,_),t.addEventListener(`click`,()=>{d(),u.clearRect(0,0,n.width,n.height),r.textContent=`—`,i.textContent=`—`,s.textContent=`—`,c.textContent=`—`}),o.textContent=`draw something and press Run`,a.addEventListener(`click`,()=>{alert(`Next step will run the model. For now, just testing UI.`)});</script>
+    </head>
+    <body class="min-h-screen bg-slate-950 text-slate-100">
+        <div id="app" class="max-w-4xl mx-auto p-6 space-y-6">
+            <h1 class="text-2xl font-semibold">MNIST</h1>
+
+            <div class="rounded-2xl bg-slate-900 p-4 ring-1 ring-white/10 space-y-4">
+                <div class="flex items-center gap-3">
+                    <label for="model" class="text-sm text-slate-300">Model</label>
+                    <select id="model" class="bg-slate-800 text-slate-100 text-sm rounded-md px-2 py-1 ring-1 ring-white/10">
+                        <option value="mnist_mlp">mnist_mlp</option>
+                        <option value="mnist_convnet">mnist_convnet</option>
+                    </select>
+                    <span id="status" class="text-xs text-slate-400 ml-auto">idle</span>
+                </div>
+
+                <div class="flex gap-6 items-start">
+                    <div>
+                        <canvas id="draw" width="280" height="280" class="rounded-xl bg-black ring-1 ring-white/10 cursor-crosshair"></canvas>
+                        <div class="mt-3 flex gap-2">
+                            <button id="clear" class="px-3 py-1.5 text-sm rounded-md bg-slate-800 hover:bg-slate-700 ring-1 ring-white/10">Clear</button>
+                            <button id="run" class="px-3 py-1.5 text-sm rounded-md bg-indigo-600 hover:bg-indigo-500">Run</button>
+                        </div>
+                    </div>
+
+                    <div class="flex-1">
+                        <div class="text-sm text-slate-300 mb-2">Preprocessed (28×28)</div>
+                        <canvas id="preview" width="112" height="112" class="rounded-md bg-slate-900 ring-1 ring-white/10"></canvas>
+
+                        <div class="mt-4 grid grid-cols-2 gap-2 text-sm">
+                            <div class="rounded-md bg-slate-900 ring-1 ring-white/10 p-2">
+                                <div class="text-slate-400">Compilation</div>
+                                <div id="compileTime" class="font-mono">—</div>
+                            </div>
+                            <div class="rounded-md bg-slate-900 ring-1 ring-white/10 p-2">
+                                <div class="text-slate-400">Inference</div>
+                                <div id="inferTime" class="font-mono">—</div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 rounded-md bg-slate-900 ring-1 ring-white/10 p-3">
+                            <div class="text-slate-400 text-sm">Prediction</div>
+                            <div id="pred" class="text-3xl font-semibold mt-1">—</div>
+                            <div id="conf" class="text-sm text-slate-400">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-xs text-slate-500">Draw white on black, then press “Run”.</p>
+        </div>
+    </body>
 </html>
