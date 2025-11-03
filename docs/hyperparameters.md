@@ -13,19 +13,20 @@
 
 **Goal:** explore the main hyperparameters for MNIST classification (MLP and CNN) and identify the best configuration.
 
-### Notes
-- Feasible **batch sizes** on my hardware: `64`, `128`, `256`
-- Reasonable **network depth**: 2–3 hidden layers
+### Research notes
+- Feasible and reasonable **batch sizes**: `64`, `128`, `256`
+- Reasonable **network depth**: 2–3 hidden layers for this complexity is more than enoug
 - **Uniform layer width** (same number of neurons per hidden layer) is simple and effective
 - Common **optimizers**: `AdamW`, `SGD + momentum`
 - Common **activations**: `SiLU`, `ReLU`
-- **Learning rate** strategy: start high, then **cosine-anneal** smoothly toward a minimum
+- **Learning rate** strategy: looking the "basic" cost function behaviour compared to the network weighs I was thinking of starting high, then smoothly decreasing toward a minimum. For this I found **cosine-anneal**.
 
 ### Approach
 Test ≈ 10 random combinations of  
-→ batch size, optimizer, activation function, and learning rate  
+→ batch size, optimizer, activation function, and initial learning rate (lr_max)
 for both MLP and CNN.  
 Each configuration is trained automatically and the test accuracy is logged to identify the best setup.
+Later on we will also test 2 other hyperparameters: weight decay and the width of the network.
 
 ---
 
@@ -62,6 +63,7 @@ Each configuration is trained automatically and the test accuracy is logged to i
 
 ## Second-Phase Experiments
 
+Now that I found good combinations I will now try to improve them by plotting their behaviour and try to interpret where they need improvement.
 ### MLP
 
 **Command**
@@ -79,11 +81,11 @@ lr: 1.96e-05  loss: 0.04  acc: 98.60 %
 ### **Observations**
 - **Loss:** Train and validation losses drop quickly then plateau together → stable, no overfitting.  
 - **Accuracy:** Both reach ≈ 98.6 %, overlap closely.  
-- **Gap:** ≈ 0 pp; occasionally val > train → fine.  
+- **Gap:** ≈ 0-3 pp; occasionally val > train → fine.  
 - **LR schedule:** Smooth cosine decay (≈ 0.001 → 0.00002), works perfectly.
 
 ---
-So fortunately and unfortunately for our experiments the results are pretty good so I don't really know what to tweak to improve it more but for the sake of exploring I tried with more neurons:
+So fortunately and unfortunately for our experiments the results are pretty good so I don't really know what to tweak to improve it more but for the sake of exploring I tried with more neurons (before 512):
 
 **Command:**  
 ```bash
@@ -126,7 +128,7 @@ lr: 1.09e-05 loss: 0.03 acc: 99.25 %
 - **LR schedule:** Cosine decay functions as intended.
 
 ---
-Again fortunately and unfortunately for our experiments the results are pretty good so I just wanted to play around with the weigh decay to see if we could acheive even better generalization:
+Again fortunately and unfortunately for our experiments the results are pretty good so I just wanted to play around with the weight decay to see if we could acheive even better generalization (based on its formula):
 
 **Command:**  
 ```bash
@@ -144,11 +146,11 @@ lr: 1.09e-05 loss: 0.02 acc: 99.34 %
 - Curves remain identical; accuracy slightly improved.  
 - Training speed unaffected.  
 
-So I could go on and see to what extent the weigh decay can improve the accuracy but I am already satisfied with the current accuracy.
+So I could go on and see to what extent the weight decay can improve the accuracy but I am already satisfied with the current accuracy.
 
 ---
 
-## ✅ Final Remarks
+## Final Remarks
 - Both models exceeded my accuracy targets:  
   - **MLP:** ≈ 98.60 %  
   - **CNN:** ≈ 99.34 %  
