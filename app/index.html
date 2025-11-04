@@ -7,37 +7,64 @@
         <link href="/src/style.css" rel="stylesheet">
     </head>
     <body class="min-h-screen bg-slate-950 text-slate-100">
-        <div id="app" class="max-w-4xl mx-auto p-6 space-y-6">
-            <header class="flex items-center justify-between">
+        <div id="app" class="mx-auto max-w-5xl p-4 sm:p-6 space-y-6">
+            <header class="grid grid-cols-1 md:grid-cols-3 items-center gap-3">
                 <h1 class="text-2xl font-semibold tracking-tight">MNIST</h1>
-                <div class="flex items-center gap-3">
-                    <label for="model" class="text-sm text-slate-300">Model</label>
-                    <select id="model" class="bg-slate-800 text-slate-100 text-sm rounded-md px-2 py-1 ring-1 ring-white/10">
+
+                <div class="flex items-center gap-2 md:justify-center">
+                    <label for="model" class="text-sm text-slate-300 shrink-0">Model</label>
+                    <select id="model"
+                        class="bg-slate-800 text-slate-100 text-sm rounded-md px-2 py-1 ring-1 ring-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </select>
-                    <span id="status" class="text-xs text-slate-400 ml-2">idle</span>
-                    <span id="timer" class="text-xs text-slate-400">—</span>
+                </div>
+
+                <div class="flex items-center gap-2 md:justify-end">
+                    <span id="status"
+                        class="text-xs text-slate-400 inline-block w-24 text-right whitespace-nowrap overflow-hidden text-ellipsis leading-tight">
+                        ready
+                    </span>
+                    <span id="timer"
+                        class="text-xs text-slate-400 inline-block font-mono tabular-nums w-36 md:w-40 text-right whitespace-nowrap overflow-hidden text-ellipsis leading-tight">
+                        0000.0 ms
+                    </span>
                 </div>
             </header>
 
-            <main class="rounded-2xl bg-slate-900 p-4 ring-1 ring-white/10 space-y-4">
-                <div class="flex flex-col md:flex-row gap-6">
-                    <section>
-                        <canvas id="draw" width="280" height="280" class="rounded-xl bg-black ring-1 ring-white/10 cursor-crosshair w-[280px] h-[280px]"></canvas>
-                        <div class="mt-3 flex gap-2">
-                            <button id="clear" class="px-3 py-1.5 text-sm rounded-md bg-slate-800 hover:bg-slate-700 ring-1 ring-white/10">Clear</button>
-                            <button id="run" class="px-3 py-1.5 text-sm rounded-md bg-indigo-600 hover:bg-indigo-500">Run</button>
+            <main class="rounded-2xl bg-slate-900 p-4 sm:p-5 ring-1 ring-white/10 space-y-4">
+                <div class="grid gap-6 md:grid-cols-2">
+                    <section class="justify-self-start">
+                        <div class="w-full max-w-xs">
+                            <canvas id="draw"
+                                width="280" height="280"
+                                class="block w-full h-auto rounded-xl bg-black ring-1 ring-white/10 cursor-crosshair"></canvas>
+                        </div>
+                        <div class="mt-3 grid grid-cols-2 gap-2 sm:flex sm:gap-2">
+                            <button id="clear"
+                                class="px-3 py-1.5 text-sm rounded-md bg-slate-800 hover:bg-slate-700 ring-1 ring-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                Clear
+                            </button>
+                            <button id="run"
+                                class="px-3 py-1.5 text-sm rounded-md bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                                Run
+                            </button>
                         </div>
                     </section>
 
-                    <section class="flex-1">
+                    <section class="flex-1 min-w-0">
                         <div class="text-sm text-slate-300 mb-2">Preprocessed (28×28)</div>
-                        <canvas id="preview" width="112" height="112" class="rounded-md bg-slate-900 ring-1 ring-white/10"></canvas>
+                        <div class="w-28 sm:w-36">
+                            <canvas id="preview"
+                                width="112" height="112"
+                                class="block w-full h-auto rounded-md bg-slate-900 ring-1 ring-white/10"></canvas>
+                        </div>
 
                         <div class="mt-4 rounded-md bg-slate-900 ring-1 ring-white/10 p-3">
                             <div class="text-slate-400 text-sm">Prediction</div>
-                            <div id="pred" class="text-3xl font-semibold mt-1"></div>
+                            <div id="pred" class="text-3xl font-semibold mt-1 leading-none"></div>
                             <div class="mt-4">
-                                <canvas id="probsChart" height="180"></canvas>
+                                <div class="w-full">
+                                    <canvas id="probsChart" height="180" class="block w-full"></canvas>
+                                </div>
                             </div>
                         </div>
                     </section>
@@ -46,6 +73,7 @@
 
             <p class="text-xs text-slate-500">Draw white on black, then press “Run”.</p>
         </div>
+
         <script type="module" src="/src/main.js"></script>
     </body>
 </html>

@@ -46,3 +46,16 @@ export function argmax(arr) {
     return best;
 }
 
+export function hasInk(canvas, { minPixels = 10 } = {}) {
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const { width, height } = canvas;
+    const data = ctx.getImageData(0, 0, width, height).data;
+
+    let count = 0;
+    for (let i = 0; i < data.length; i += 4) {
+        if ((data[i] | data[i + 1] | data[i + 2]) !== 0) {
+            if (++count >= minPixels) return true;
+        }
+    }
+    return false;
+}

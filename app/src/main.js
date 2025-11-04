@@ -7,7 +7,7 @@
 
 import Chart from 'chart.js/auto';
 import { makeGuess, setupInference } from "./inference";
-import { preprocess, softmax, argmax } from "./utils";
+import { preprocess, softmax, argmax, hasInk } from "./utils";
 import { setupDrawing } from "./drawing";
 
 const draw = document.getElementById("draw");
@@ -67,7 +67,7 @@ function createProbChart(ctx) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            animation: { duration: 180 },
+            animation: { duration: 400 },
             plugins: {
                 legend: { display: false },
                 tooltip: {
@@ -105,17 +105,40 @@ clearBtn.addEventListener("click", () => {
     resetUI();
 });
 
-runBtn.addEventListener("click", async () => {
-    if (!isReady) return; // guard
-    const input = preprocess(pctx, draw);
+async function runInference() {
+    if (!isReady) return;
+    if (!hasInk(draw)) {
+        setPred("");
+        updateProbChart(probChart, new Array(10).fill(0));
+        return;
+    }
 
+    const input = preprocess(pctx, draw);
     const result = await Promise.resolve(makeGuess(input));
 
     const logits = result?.output?.data ?? result?.output ?? result ?? [];
     const probs = softmax(logits);
-    const predIdx = argmax(probs);                                  
+    const predIdx = argmax(probs);
 
     setPred(Number.isFinite(predIdx) ? predIdx : "");
     updateProbChart(probChart, probs);
+}
+
+let isRunning = false;
+let intervalId = null;
+
+runBtn.addEventListener("click", () => {
+    if (!isRunning) {
+        runInference();
+        intervalId = setInterval(runInference, 500);
+        runBtn.textContent = "Stop";
+        isRunning = true;
+    } else {
+
+        clearInterval(intervalId);
+        intervalId = null;
+        runBtn.textContent = "Run";
+        isRunning = false;
+    }
 });
 
