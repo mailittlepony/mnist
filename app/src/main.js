@@ -18,6 +18,7 @@ const runBtn = document.getElementById("run");
 const statusEl = document.getElementById("status");
 const timerEl = document.getElementById("timer");
 const probsCanvas = document.getElementById('probsChart');
+const eraseBtn = document.getElementById("erase");
 
 const pctx = preview.getContext("2d");
 const drawing = setupDrawing(draw, { bg: "black", penColor: "white", penWidth: 20 });
@@ -140,5 +141,24 @@ runBtn.addEventListener("click", () => {
         runBtn.textContent = "Run";
         isRunning = false;
     }
+});
+
+function setToolUI(active) {
+    // Toggle button styling to indicate active eraser
+    if (active) {
+        eraseBtn.classList.remove("bg-slate-800");
+        eraseBtn.classList.add("bg-rose-600", "hover:bg-rose-500", "text-white");
+        eraseBtn.setAttribute("aria-pressed", "true");
+    } else {
+        eraseBtn.classList.remove("bg-rose-600", "hover:bg-rose-500", "text-white");
+        eraseBtn.classList.add("bg-slate-800");
+        eraseBtn.setAttribute("aria-pressed", "false");
+    }
+}
+
+eraseBtn.addEventListener("click", () => {
+    const next = drawing.tool === "erase" ? "pen" : "erase";
+    drawing.setTool(next);
+    setToolUI(next === "erase");
 });
 

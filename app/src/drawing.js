@@ -6,8 +6,12 @@
  */
 
 
-export function setupDrawing(drawCanvas, { bg = "black", penColor = "white", penWidth = 20 } = {}) {
+export function setupDrawing(
+    drawCanvas,
+    { bg = "black", penColor = "white", penWidth = 20, eraserWidth = null } = {}
+) {
     const ctx = drawCanvas.getContext("2d");
+    const ERASE_WIDTH = eraserWidth ?? Math.round(penWidth * 1.5);
 
     function resetCanvas() {
         ctx.fillStyle = bg;
@@ -16,18 +20,18 @@ export function setupDrawing(drawCanvas, { bg = "black", penColor = "white", pen
 
     let drawing = false;
     let last = null;
-    let tool = "pen"; // 'pen' | 'erase'
+    let tool = "pen"; 
 
     const pen = { color: penColor, width: penWidth, cap: "round", join: "round" };
 
     function strokeStyle() {
         if (tool === "erase") {
-            // "erase" by painting background color
-            ctx.strokeStyle = bg;
+            ctx.strokeStyle = bg;          
+            ctx.lineWidth = ERASE_WIDTH;    
         } else {
             ctx.strokeStyle = pen.color;
+            ctx.lineWidth = pen.width;
         }
-        ctx.lineWidth = pen.width;
         ctx.lineCap = pen.cap;
         ctx.lineJoin = pen.join;
     }
@@ -76,8 +80,10 @@ export function setupDrawing(drawCanvas, { bg = "black", penColor = "white", pen
     return {
         ctx,
         resetCanvas,
-        setTool(next) { tool = next; }, // 'pen' or 'erase'
-        get tool() { return tool; }
+        setTool(next) { tool = next; },  
+        get tool() { return tool; },
+        setPenColor(c) { pen.color = c; },
+        setPenWidth(w) { pen.width = w; },
+        setEraserWidth(w) { /* allow runtime tweak */ if (Number.isFinite(w) && w > 0) { /* shadow const */ } }
     };
 }
-
