@@ -5,7 +5,7 @@
  * Distributed under terms of the MIT license.
  */
 
-export function preprocess(pctx) {
+export function preprocess(pctx, draw) {
     // downscale
     const off = document.createElement("canvas");
     off.width = 28; off.height = 28;
@@ -15,9 +15,10 @@ export function preprocess(pctx) {
     offCtx.drawImage(draw, 0, 0, 28, 28);
 
     // preview 
+    const pv = pctx.canvas;
     pctx.imageSmoothingEnabled = false;
-    pctx.clearRect(0, 0, preview.width, preview.height);
-    pctx.drawImage(off, 0, 0, 112, 112);
+    pctx.clearRect(0, 0, pv.width, pv.height);
+    pctx.drawImage(off, 0, 0, pv.width, pv.height);
 
     // read pixels
     const { data } = offCtx.getImageData(0, 0, 28, 28);

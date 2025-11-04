@@ -13,7 +13,6 @@ const models = ["mnist_mlp", "mnist_convnet"];
 const modelSelect = document.getElementById("model");
 const statusText = document.getElementById("status");
 const timerText = document.getElementById("timer");
-const runButton = document.getElementById("run");
 
 const error = (err) => {
     statusText.innerHTML = `Error: ${err}`;
@@ -86,6 +85,5 @@ export const setupInference = async () => {
         modelSelect.appendChild(modelOpt);
     }
     modelSelect.addEventListener("change", (e) => loadNet(e.target.value));
-    runButton.addEventListener("click", () => runNet());
     await loadNet(modelSelect.value);
 };

@@ -14,8 +14,6 @@ const preview = document.getElementById("preview");
 const pred = document.getElementById("pred");
 const conf = document.getElementById("conf");
 const runBtn = document.getElementById("run");
-const statusText = document.getElementById("status");
-const modelSelect = document.getElementById("model");
 const compileTime = document.getElementById("compileTime");
 const inferTime = document.getElementById("inferTime");
 
@@ -81,17 +79,16 @@ clearBtn.addEventListener("click", () => {
     inferTime.textContent = "—";
 });
 
-statusText.textContent = "draw something and press Run";
-runBtn.addEventListener("click", () => {
-    alert("Next step will run the model. For now, just testing UI.");
-});
+await setupInference();
+
 
 // test it via Run button
 runBtn.addEventListener("click", () => {
-    const input = preprocess(pctx);
+    const input = preprocess(pctx, draw);
     console.log("input[0..9] = ", input.slice(0,10));
-    alert("Preprocess done (check console). Next step will run the model.");
-}, { once: true });
+    const output = makeGuess(input)
+    console.log(output);
+});
 
 
 
