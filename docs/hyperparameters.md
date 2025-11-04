@@ -105,6 +105,13 @@ lr: 1.96e-05 loss: 0.12 acc: 98.54 %
   - 512 neurons → 39 ms  
 - Larger width adds cost without benefit on MNIST.
 
+I then tried quickly with my `run_experiments.py` a completely different strategy: really small batch size but bigger width which went pretty fast but the results were not convincing: 
+
+| Model | Batch | Optimizer | LR | Activation | Accuracy |
+|--------|-------|------------|------|-------------|-----------|
+| MLP | 64 | ADAMW | 0.001751 | silu | 95.84% |
+| MLP | 64 | ADAMW | 0.0005761 | silu | 96.54% |
+| MLP | 64 | ADAMW | 0.0006214 | silu | 96.89% |
 ---
 
 ## CNN
