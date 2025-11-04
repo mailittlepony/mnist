@@ -5,7 +5,9 @@
  * Distributed under terms of the MIT license.
  */
 
-// DOM refs
+import { makeGuess, setupInference} from "./inference";
+import { preprocess } from "./utils";
+
 const draw = document.getElementById("draw");
 const clearBtn = document.getElementById("clear");
 const preview = document.getElementById("preview");
@@ -20,7 +22,6 @@ const inferTime = document.getElementById("inferTime");
 const ctx = draw.getContext("2d");
 const pctx = preview.getContext("2d");
 
-// init canvas: black background
 function resetCanvas() {
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, draw.width, draw.height);
@@ -84,4 +85,13 @@ statusText.textContent = "draw something and press Run";
 runBtn.addEventListener("click", () => {
     alert("Next step will run the model. For now, just testing UI.");
 });
+
+// test it via Run button
+runBtn.addEventListener("click", () => {
+    const input = preprocess(pctx);
+    console.log("input[0..9] = ", input.slice(0,10));
+    alert("Preprocess done (check console). Next step will run the model.");
+}, { once: true });
+
+
 

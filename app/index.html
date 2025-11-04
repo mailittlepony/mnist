@@ -55,6 +55,14 @@
 
             <p class="text-xs text-slate-500">Draw white on black, then press “Run”.</p>
         </div>
-        <script type="module" src="/src/main.js"></script>
+        <script type="module" src="/src/main.js">
+            import mlp from './mnist_mlp/mnist_mlp.js';
+            import cnn from './mnist_convnet/mnist_convnet.js';
+
+            window.MODELS = {
+            mnist_mlp: mlp,
+            mnist_convnet: cnn
+            };
+        </script>
     </body>
 </html>
