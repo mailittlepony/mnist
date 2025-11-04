@@ -62,7 +62,7 @@ cd mnist
 ### 2. Train models
 Run any of the following to train locally:
 ```bash
-cd train
+cd training
 
 # Train MLP
 python mnist_mlp.py
