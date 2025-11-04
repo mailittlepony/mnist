@@ -11,15 +11,15 @@
 
 ## Strategy
 
-**Goal:** explore the main hyperparameters for MNIST classification (MLP and CNN) and identify the best configuration.
+**Goal:** explore the main hyperparameters for MNIST classification (MLP and CNN) and identify the best configurations.
 
 ### Research notes
 - Feasible and reasonable **batch sizes**: `64`, `128`, `256`
-- Reasonable **network depth**: 2–3 hidden layers for this complexity is more than enoug
-- **Uniform layer width** (same number of neurons per hidden layer) is simple and effective
+- Reasonable **network depth**: 2–3 hidden layers for this complexity is more than enough
+- **Uniform layer width** (same number of neurons per hidden layer) is simple and effective and I prefer starting simple and adjusting later if needed.
 - Common **optimizers**: `AdamW`, `SGD + momentum`
-- Common **activations**: `SiLU`, `ReLU`
-- **Learning rate** strategy: looking the "basic" cost function behaviour compared to the network weighs I was thinking of starting high, then smoothly decreasing toward a minimum. For this I found **cosine-anneal**.
+- Chosen **activations**: `SiLU`, `ReLU` rather than `tanh` or `sigmoid` due to how they flatten and the gradient could be near 0 and intuitively I don't see why we would want that for our training. However I might be wrong and this could also be some tweaks to make in case of bad results.
+- **Learning rate** strategy: looking at the "basic" cost function behaviour compared to the network weights I was thinking of starting high, then smoothly decreasing as we maybe come toward a minimum of the cost function. For this I found **cosine-anneal**.
 
 ### Approach
 Test ≈ 10 random combinations of  
@@ -147,6 +147,7 @@ lr: 1.09e-05 loss: 0.02 acc: 99.34 %
 - Training speed unaffected.  
 
 So I could go on and see to what extent the weight decay can improve the accuracy but I am already satisfied with the current accuracy.
+I still tried another configuration which is the same but with just a bigger batch size (256) because I thought it wouldn't do any wrong except from slowing a tiny bit the learning but the results gave the same accuracy more or less.
 
 ---
 
