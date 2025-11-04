@@ -30,3 +30,19 @@ export function preprocess(pctx, draw) {
     }
     return input;
 }
+
+// Convert logits to probabilities
+export function softmax(logits) {
+    const arr = Array.from(logits || []); 
+    const max = Math.max(...arr);        
+    const exps = arr.map(x => Math.exp(x - max));
+    const sum = exps.reduce((a, b) => a + b, 0) || 1;
+    return exps.map(v => v / sum);
+}
+
+export function argmax(arr) {
+    let best = 0;
+    for (let i = 1; i < arr.length; i++) if (arr[i] > arr[best]) best = i;
+    return best;
+}
+
