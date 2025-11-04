@@ -23,7 +23,7 @@ The goal was to explore **hyperparameter optimization** and **on-device inferenc
 - **Probability bar chart** — softmax visualization of all 10 digits (0–9)  
 - **WebGPU acceleration** — inference runs directly on GPU  
 - **Training & evaluation tools** — scripts for local experiments and plotting  
-- **Hyperparameter exploration** — you can follow my trianing strategies in **[hyperparameters.md](./docs/hyperparameters.md)**
+- **Hyperparameter exploration** — you can follow my training strategies in **[hyperparameters.md](./docs/hyperparameters.md)**
 
 
 ---
