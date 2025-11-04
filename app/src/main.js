@@ -144,14 +144,15 @@ runBtn.addEventListener("click", () => {
 });
 
 function setToolUI(active) {
-    // Toggle button styling to indicate active eraser
+    eraseBtn.classList.remove(
+        "bg-rose-600", "hover:bg-rose-500", "hover:bg-rose-700",
+        "bg-slate-800", "hover:bg-slate-700", "text-white"
+    );
     if (active) {
-        eraseBtn.classList.remove("bg-slate-800");
-        eraseBtn.classList.add("bg-rose-600", "hover:bg-rose-500", "text-white");
+        eraseBtn.classList.add("bg-rose-600", "hover:bg-rose-700", "text-white");
         eraseBtn.setAttribute("aria-pressed", "true");
     } else {
-        eraseBtn.classList.remove("bg-rose-600", "hover:bg-rose-500", "text-white");
-        eraseBtn.classList.add("bg-slate-800");
+        eraseBtn.classList.add("bg-slate-800", "hover:bg-slate-700");
         eraseBtn.setAttribute("aria-pressed", "false");
     }
 }
