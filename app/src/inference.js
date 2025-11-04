@@ -8,7 +8,7 @@
 
 let net;
 
-const modelUrl = "/models";
+const modelUrl = "models";
 const models = ["mnist_mlp", "mnist_convnet"];
 const modelSelect = document.getElementById("model");
 const statusText = document.getElementById("status");
@@ -20,7 +20,6 @@ const error = (err) => {
 };
 
 const timer = async (func, label = "") => {
-    timerText.innerHTML = "";
     const start = performance.now();
     const out = await func();
     const delta = (performance.now() - start).toFixed(1);
